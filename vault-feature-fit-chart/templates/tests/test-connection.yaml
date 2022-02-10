@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "vault-feature-fit-chart.fullname" . }}-test-connection"
+  labels:
+    {{- include "vault-feature-fit-chart.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "vault-feature-fit-chart.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
